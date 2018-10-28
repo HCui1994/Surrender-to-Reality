@@ -23,7 +23,7 @@ class OnePass:
         # 边界：如果整个数列递减，则直接反转整个数列
         nums[i+1:] = nums[i+1:][::-1]
         return nums
-
+ 
     
 # nums = [1,0,0]
 # one_pass = OnePass()
