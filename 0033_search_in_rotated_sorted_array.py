@@ -8,7 +8,7 @@ class Solution:
 
     # don't use this solution, its trash
     def search2(self, nums, target):
-        # cases:
+        # cases: 
         # 0. == mid, bingo!
         # 1. < left, < mid, <= right,  [mid+1, right] ???
         # 2. < left, < mid, > right ,  return -1
