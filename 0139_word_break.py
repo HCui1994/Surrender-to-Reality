@@ -16,7 +16,7 @@ class Brutal(object):
                 if word == string[:word_length]:
                     match_flag = match_flag or self._word_breaker(string[word_length:])
         
-        return match_flag
+        return match_flag 
 
 
 
