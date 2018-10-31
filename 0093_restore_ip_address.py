@@ -31,7 +31,7 @@ class Solution:
             if compare(string[:3], "255") and string[:1] != "0" and string[:2] != "00" and string[:3] != "000" and compare("0", string[:3]):
                 self.restorer(string=string[3:], segment=segment+1, ip=ip+string[:3]+".", all_posible_ip=all_posible_ip)
             
-            # a non-zero segment cannot start with '0'!
+            # edge case: a non-zero segment cannot start with '0'!
     
 
 solution = Solution()
