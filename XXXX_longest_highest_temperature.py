@@ -1,6 +1,9 @@
-# give a time series that keeps infromation about temperature readings for a city, reutrn a time series that tells you, for a giving day, how long has its value being the largest running value.
-# eg: for temperature readings [30, 50, 60, 20, 10, 40, 60, 90]
-# the transformed time series should be [1,2,3,1,1,3,7,8]
+"""
+given a time series that keeps infromation about temperature readings for a city, 
+reutrn a time series that tells you, for a given day, how long has its value being the largest running value.
+eg: for temperature readings [30, 50, 60, 20, 10, 40, 60, 90]
+the transformed time series should be [1,2,3,1,1,3,7,8]
+"""
 
 class Solution(object):
     def solution(self, time_series):
