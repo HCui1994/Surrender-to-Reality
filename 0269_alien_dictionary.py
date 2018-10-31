@@ -31,7 +31,7 @@ class Tree(object):
     
     def _inorder(self, node, series):
         if node is None:
-            return
+            return 
         self._inorder(node=node.left, series=series)
         series.append(node.val)
         self._inorder(node=node.right, series=series)
