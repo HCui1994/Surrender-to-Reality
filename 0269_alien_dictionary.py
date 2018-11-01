@@ -62,6 +62,75 @@ class Solution:
             return ""
 
 
+# words = ["wrt","wrf","er","ett","rftt","te"]
+# solution = Solution()
+# print(solution.alienOrder(words))
+
+
+
+
+""" graph data structrure """
+class AlienCharacter:
+    def __init__(self, char):
+        self.char = char
+        self.indegree = 0
+        self.succ = set([])
+
+class AlienOrder2:
+    def alien_order(self , words):
+        init_graph = self._initialize(words)
+        graph = self._build_graph(words, init_graph)
+        for key in graph.keys():
+            node = graph[key]
+            print(node.char, node.indegree, node.succ)
+        order = self._topology_bfs(graph)
+        print(order)
+        
+    def _initialize(self, words):
+        init_graph = {}
+        for word in words:
+            for letter in word:
+                if not letter in init_graph.keys():
+                    init_graph[letter] = AlienCharacter(letter)
+        return init_graph
+    
+    def _build_graph(self, words, init_graph):
+        for word_idx in range(len(words) - 1):
+            edges = set([])
+            word_smaller = words[word_idx]
+            word_greater = words[word_idx + 1]
+            for letter_idx in range(min(len(word_greater), len(word_smaller))):
+                # find the first pair of different letters within two adjacent words
+                if word_smaller[letter_idx] == word_greater[letter_idx]:
+                    continue
+                prec = word_smaller[letter_idx]
+                succ = word_greater[letter_idx]
+                if not (prec, succ) in edges:
+                    init_graph[prec].succ.add(init_graph[succ])
+                    init_graph[succ].indegree += 1
+                    edges.add((prec, succ))
+                    break
+                else:
+                    break
+                
+        return init_graph
+
+    def _topology_bfs(self, graph):
+        queue = []
+        order = ""
+        for key in graph.keys():
+            if graph[key].indegree == 0:
+                queue.append(key)
+        while queue:
+            curr = queue.pop(0)
+            order += curr
+            if graph[curr].succ:
+                for succ in graph[curr].succ:
+                    succ.indegree -= 1
+                    if succ.indegree == 0:
+                        queue.append(succ.char)
+        return order
+
 words = ["wrt","wrf","er","ett","rftt","te"]
-solution = Solution()
-print(solution.alienOrder(words))
+alien_order_2 = AlienOrder2()
+alien_order_2.alien_order(words)
