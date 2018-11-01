@@ -1,10 +1,6 @@
-def compare(string1, string2):
-    if len(string1) < len(string2):
-        return True
-    elif len(string1) == len(string2):
-        return string1 <= string2
-    else:
-        return False
+string = ""
+def pass_by_reference_test(string):
+    string += "shit"
 
-
-print(compare("255", "255"))
+pass_by_reference_test(string)
+print(string)

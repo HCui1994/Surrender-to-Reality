@@ -1,55 +1,67 @@
-class TreeNode(object):
-    def __init__(self, x):
-        self.val = x
-        self.left = None
-        self.right = None
-
-class Tree(object):
-    def __init__(self, x):
-        self.root = TreeNode(x)
-
-    def insert(self, x):
-        node = TreeNode(x)
-        parent = self.root
-        found_position = False
-        while not found_position:
-            if x <= parent.val and parent.left is not None:
-                parent = parent.left
-            elif x <= parent.val and parent.left is None:
-                parent.left = node
-                found_position = True
-            elif x > parent.val and parent.right is not None:
-                parent = parent.right
-            elif x > parent.val and parent.right is None:
-                parent.right = node
-                found_position = True
-    
-    def inorder(self):
-        series = []
-        self._inorder(node=self.root, series=series)
-        return series
-    
-    def _inorder(self, node, series):
-        if node is None:
-            return 
-        self._inorder(node=node.left, series=series)
-        series.append(node.val)
-        self._inorder(node=node.right, series=series)
-
-
-# solution using binary serach tree (in-order traverse)   
 class Solution:
+    """ BFS Solution, AC """
     def alienOrder(self, words):
-        word_lengths = [len(word) - 1 for word in words]
-        max_length = max(word_lengths)
+        graph = {}
+        indegree = {}
+        self._initialize(words, graph, indegree)
+        self._build_graph(words, graph, indegree)
+        print(graph)
+        print(indegree)
+        return self._topological_sort(graph, indegree)
 
+
+    def _initialize(self, words, graph, indegree):
+        """
+        Args: 
+            words: [string1, string2, ...]
+            graph: {precursor1: set(successor11, successor12, ...), ...}
+            indegree: {successor1: indegree2, ...}
+        """
         for word in words:
-            if len(word) < max_length:
-                word += "#" * max_length - len(word)
+            for letter in word:
+                if not letter in graph.keys():
+                    graph[letter] = set([])
+                if not letter in indegree.keys():
+                    indegree[letter] = 0
 
-        dict = set([])
-        tree = Tree(words[0][0])
-        dict.add(words[0][0])
-        for i in range(max_length):
-            for j in range(len(words)):
-                pass
+    def _build_graph(self, words, graph, indegree):
+        edges = set([])
+        for word_idx in range(len(words) - 1):
+            word_smaller = words[word_idx]
+            word_greater = words[word_idx + 1]
+            for letter_idx in range(min(len(word_greater), len(word_smaller))):
+                if word_smaller[letter_idx] == word_greater[letter_idx]:
+                    continue
+                if not (word_smaller[letter_idx], word_greater[letter_idx]) in edges:
+                    edges.add((word_smaller[letter_idx], word_greater[letter_idx]))
+                    graph[word_smaller[letter_idx]].add(word_greater[letter_idx])
+                    indegree[word_greater[letter_idx]] += 1
+                    break
+                else:
+                    break
+
+    def _topological_sort(self, graph, indegree):
+        order = ""
+        queue = []
+        for key in indegree.keys():
+            if indegree[key] == 0:
+                queue.append(key)
+        while queue:
+            prec = queue.pop(0)
+            order += prec
+            succ_set = graph[prec]
+            if succ_set: # 如果有后继节点
+                for succ in succ_set:
+                    indegree[succ] -= 1
+                    if indegree[succ] == 0: # 如果有环，在进入搜索时，进入环的节点，入读不可能减到 0
+                                            # 将会导致没有完成搜索，队列就已经为空
+                        queue.append(succ)
+        if len(order) == len(graph):        # 所以 order 中字符的数量将少于dict字符数量
+            return order                    
+        else:
+            return ""
+
+
+words = ["wrt","wrf","er","ett","rftt","te"]
+solution = Solution()
+print(solution.alienOrder(words))
