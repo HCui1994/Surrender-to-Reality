@@ -12,9 +12,9 @@ class Solution:
         """
         dp = [[0, 0] for _ in range(len(nums)+1)]
         # 初始化
-        dp[1][0] = 0
-        dp[1][1] = nums[0]
-        for i in range(2, len(dp), +1):
+        dp[0][0] = 0
+        dp[0][1] = nums[0]
+        for i in range(1, len(dp), +1):
             """不抢商店i，可以抢i-1，也可以不抢i-1"""
             dp[i][0] = max(dp[i-1][1], dp[i-1][0])
             """抢了商店i，一定没有抢i-1"""
@@ -28,18 +28,16 @@ class Solution:
             return nums[0]
 
         """商店i处的收益仅和i-1的收益相关"""
-        """只需要存储i，i-1"""
-        dp = [[0,       0], 
-              [0, nums[0]]
-        ]
+        """只需要存i-1"""
+        dp = [0, nums[0]]
         for i in range(1, len(nums), +1):
-            rob_current = dp[0][0] + nums[i]
-            not_rob_current = max(dp[0][1], dp[1][1])
-            dp = [[dp[1][0], dp[1][1]], [not_rob_current, rob_current]]
+            rob_current = dp[0] + nums[i]
+            not_rob_current = max(dp[0], dp[1])
+            dp = [not_rob_current, rob_current]
         return max(rob_current, not_rob_current)
 
         
 
-nums = [2,1,1,2]
+nums = [1,2,3]
 soln = Solution()
 print(soln.rob_space_opt(nums))
