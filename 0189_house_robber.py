@@ -16,7 +16,7 @@ class Solution:
         dp[0][1] = nums[0]
         for i in range(1, len(dp), +1):
             """不抢商店i，可以抢i-1，也可以不抢i-1"""
-            dp[i][0] = max(dp[i-1][1], dp[i-1][0])
+            dp[i][0] = max(dp[i-1])
             """抢了商店i，一定没有抢i-1"""
             dp[i][1] = dp[i-1][0] + nums[i-1]
         return max(dp[-1])
