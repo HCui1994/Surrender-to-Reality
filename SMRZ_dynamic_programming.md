@@ -65,4 +65,51 @@ class Solution:
 
 #### House Robber II
 Same as House Robber I, but all houses form a circle. **循环数组**。
+将数组分裂，产生1错位，分别进行一次计算，返回最大值
+<pre><code>
+"""Previouely House Robber I: 0189"""
+"""循环数组，错一位，求两个解"""
+class Solution:
+    def rob(self, nums):
+        def rob_space_opt(nums):
+            if not nums:
+                return 0
+            if len(nums) == 1:
+                return nums[0]
+            dp = [0, nums[0]]
+            for i in range(1, len(nums), +1):
+                rob_current = dp[0] + nums[i]
+                not_rob_current = max(dp[0], dp[1])
+                dp = [not_rob_current, rob_current]
+            return max(rob_current, not_rob_current)
+        if not nums:
+            return 0
+        if len(nums) <= 3:
+            return max(nums)
+        return max(rob_space_opt(nums[:-1]), rob_space_opt(nums[1:]))
 
+soln = Solution()
+nums = [1,2,3,1]
+print(soln.rob(nums))
+</code></pre>
+**Extension**
+#### House Robber II 
+(don't think this is a dp problem)
+The thief has found himself a new place for his thievery again. There is only one entrance to this area, called the "root." Besides the root, each house has one and only one parent house. After a tour, the smart thief realized that "all houses in this place forms a binary tree". It will automatically contact the police if two directly-linked houses were broken into on the same night.
+<pre><code> 
+class Solution:
+    def rob(self, root):
+        return max(self.postorder_rob(root))
+    def postorder_rob(self, node):
+        if not node:
+            return [0, 0]
+        # 依旧，考虑抢左节点，和不抢左节点
+        rob_left, not_rob_left = self.postorder_rob(node.left)
+        rob_right, not_rob_right = self.postorder_rob(node.right)
+        # 如果抢当前节点，必定不能抢左右节点
+        rob_current = not_rob_left + not_rob_right + node.val
+        # 如果不抢当前节点，左右均可抢可不抢
+        not_rob_current = max(rob_left, not_rob_left) + max(rob_right, not_rob_right)
+        print(rob_current, not_rob_current)
+        return rob_current, not_rob_current
+</code></pre>
