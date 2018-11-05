@@ -162,9 +162,10 @@ class BKPK:
             memo_stuff_idx = stuff_idx + 1
             for vol1 in range(stuff_volume_1[stuff_idx], backpack_volume_1 + 1, +1):
                 for vol2 in range(stuff_volume_2[stuff_idx], backpack_volume_2 + 1, +1):
-                    collect = stuff_value[stuff_idx] + memo[memo_stuff_idx, vol1 - stuff_volume_1[stuff_idx], vol2 - stuff_volume_2[stuff_idx]]
+                    collect = stuff_value[stuff_idx] + memo[memo_stuff_idx - 1, vol1 - stuff_volume_1[stuff_idx], vol2 - stuff_volume_2[stuff_idx]]
                     uncollect = memo[memo_stuff_idx - 1, vol1, vol2]
                     memo[memo_stuff_idx, vol1, vol2] = max(collect, uncollect)
+        print(memo)
         print(memo[-1, -1, -1])
 
     @staticmethod
@@ -178,8 +179,16 @@ class BKPK:
                     uncollect = memo[vol1, vol2]
                     current_stuff_memo[vol1, vol2] = max(collect, uncollect)
             memo = current_stuff_memo
+        print(memo)
         print(memo[-1, -1])
 
+
+    @staticmethod
+    def backpack_group():
+        pass
+    
+    def backpack_dependency():
+        pass
 """
 test_cases
 """
