@@ -36,4 +36,4 @@ class Solution:
 
 costs = [[17,2,17],[16,16,5],[14,3,19]]
 soln = Solution()
-soln.min_cost_opt(costs)
+soln.min_cost_mem_opt(costs)
