@@ -6,19 +6,19 @@ class Solution:
         """
         if num == 0:
             return [0]
-        memo = [0 for _ in range(num + 1)]
-        memo[1] = 1
+        memo = [None for _ in range(num + 1)]
+        memo[:2] = [0, 1]
         for n in range(2, num + 1):
-            if n % 2 == 0:
+            if n % 2 == 0:  # 偶数相当于发生了一次向左位移，末尾补0，故1的数目不变
                 memo[n] = memo[n // 2]
-            else:
+            else:           # 奇数相当于向左位移，末尾补1，故1的数目加一
                 memo[n] = memo[n // 2] + 1
         return memo
 
 
 soln = Solution()
 num = 5
-soln.countBits(num)
+print(soln.countBits(num))
 
 
 """
@@ -33,3 +33,4 @@ soln.countBits(num)
 8       1000
 9       1001
 """
+
