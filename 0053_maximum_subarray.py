@@ -33,6 +33,7 @@ class Solution:
         return max_subarray
 
 
+
 soln = Solution()
 nums = [-2,1,-3,4,-1,2,1,-5,4]
 print(soln.max_subarray_mem_opt(nums))
