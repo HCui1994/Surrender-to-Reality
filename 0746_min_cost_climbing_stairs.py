@@ -14,12 +14,15 @@ class Solution:
             two_step = cost[idx] + memo[idx - 2]
             memo[idx] = min(one_step, two_step)
         print(memo)
+        print(memo[-1])
 
     def min_cost_mem_opt(self, cost):
         cost += [0]
         memo = cost[:2]
         for idx in range(2, len(cost), +1):
             memo[0], memo[1] = memo[1], min(cost[idx] + memo[1], cost[idx] + memo[0])
+        print(memo)
+        print(memo[-1])
 
 
 cost = [10, 15, 20]
