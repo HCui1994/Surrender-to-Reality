@@ -37,13 +37,17 @@ class Solution:
             for element in row:
                 max_diagnal = max(max_diagnal, element)
         return max_diagnal ** 2
+
+        
                     
                 
 """
 1 0 1 0 0
+1 0 0 2 0
+1 1 0 0 X
 1 0 0 1 0
-1 1 0 0 1
-1 0 0 1 0
+
+X = ? 
 """
 
 
