@@ -1,8 +1,13 @@
-## Dynamic Programming Summary
+# Dynamic Programming Summary
+
 ----
-### 1.  序列
+
+## 1. 序列
+
 dp[i]包括了前i-1个子问题的解，i=0表示不取任何元素
-#### House Robber
+
+### House Robber
+
 You are a professional robber planning to rob houses along a street. Each house has a certain amount of money stashed, the only constraint stopping you from robbing each of them is that adjacent houses have security system connected and it will automatically contact the police if two adjacent houses were broken into on the same night.  
 Given a list of non-negative integers representing the amount of money of each house, determine the maximum amount of money you can rob tonight without alerting the police.
 
@@ -44,7 +49,9 @@ nums = [2,1,1,2]
 soln = Solution()
 print(soln.rob(nums))
 </code></pre>
-**滚动指针的空间优化**
+
+#### 滚动指针的空间优化
+
 <pre><code>
 class Solution:
     def rob_space_opt(self, nums):
@@ -64,7 +71,8 @@ class Solution:
         return max(rob_current, not_rob_current)
 </code></pre>
 
-#### House Robber II
+### House Robber II
+
 Same as House Robber I, but all houses form a circle. **循环数组**。
 将数组分裂，产生1错位，分别进行一次计算，返回最大值
 <pre><code>
@@ -117,7 +125,7 @@ class Solution:
         return rob_current, not_rob_current
 </code></pre>
 
-#### Maximum Square
+### Maximum Square
 
 Given a 2D binary matrix filled with 0's and 1's, find the largest square containing only 1's and return its area.
 
@@ -132,6 +140,7 @@ Output: 4
 
 什么是子问题？
 将一个点作为**某个正方形的右下角**。 该点的左侧，上侧，左上侧，三点为右下角形成的三个正方形的大小，决定了以该点为右下角的正方形的大小。
+
 <pre><code>
 class Solution
     def maximum_square_dp(self, matrix):
@@ -159,7 +168,9 @@ class Solution
                     max_edge = matrix[row][col]
         return max_edge ** 2  
 </code></pre>
-**Follow up: Maximum Square II**
+
+### Follow up: Maximum Square II
+
 Given a 2D binary matrix filled with 0’s and 1’s, find the largest square which diagonal is all 1 and others is 0.
 
 Notice
@@ -176,9 +187,11 @@ For example, given the following matrix:
 Return 9
 
 子问题：将一个点作为**某个正方形的右下角**，改点数字代表了符合条件的正方形的对角线长度。 若想将该点纳入正方形，进行扩张，则
+
 1. diagnal_length = 左上的点的值
 2. 从该点向左数diagnal_length个点，以这些店为右下角的正方形，必须对角线全部为0
 3. 向上同理
+
 <pre><code>
 class Solution:
     def maximum_square(self, matrix):
@@ -204,11 +217,108 @@ class Solution:
         return max_diagnal ** 2
 </code></pre>
 
-### 2. 记忆化搜索
+## 2. 记忆化搜索
 
-### 3. 背包
+实现方式：从小到大的递推，从大到小的搜索
+
+### Longest Increasing Continuous Subsequence
+
+Give an integer array，find the longest increasing continuous subsequence in this array.
+
+An increasing continuous subsequence:
+
+Can be from right to left or from left to right. Indices of the integers in the subsequence should be continuous.
+
+O(n) time and O(1) extra space.
+
+Example
+For [5, 4, 2, 1, 3], the LICS is [5, 4, 2, 1], return 4.
+
+For [5, 1, 2, 3, 4], the LICS is [1, 2, 3, 4], return 4.
+
+简单难度的问题，简单在于，求解的是**连续**子序列
+
+1. 如果当前数小于等于前一个，递增被打断，长度状态重置为 1  
+2. 如果当前数大于前一个，处于递增，长度状态为前一个状态 加1  
+
+### Follow up: Longest Increasing subsequence IIs
+
+Give you an integer matrix (with row size n, column size m)，find the longest increasing continuous subsequence in this matrix. (The definition of the longest increasing continuous subsequence here can start at any row or column and go up/down/right/left any direction).
+
+Example
+Given a matrix:
+
+[
+[1 ,2 ,3 ,4 ,5],
+[16,17,24,23,6],
+[15,18,25,22,7],
+[14,19,20,21,8],
+[13,12,11,10,9]
+]
+return 25
+
+当前状态的子状态可能来自于 上 下 左 右 四个方向，转移方程不具有顺序性，难以描述。初始状态也不好找，比如此题目中，不知道应该从哪个坐标开始数子序列。
+DFS由于其 深度优先 的性质，可以优先找到最小的子问题，一旦子问题的解确定下来便不再改变（该节点已访问，不会再做修改）
+
+<pre><code>
+class Solution:
+    def __init__(self):
+        self._memo = None
+        self._visited = None
+        self._matrix = None
+        self._num_row = 0
+        self._num_col = 0
+
+    def longest_inc_cont_subseq(self, matrix):
+        if not matrix:
+            return 0
+        self._num_row = len(matrix)
+        self._num_col = len(matrix[0])
+        self._visited = [[False for _ in range(self._num_col)] for _ in range(self._num_row)]
+        self._memo = [[1 for _ in range(self._num_col)] for _ in range(self._num_row)]
+        self._matrix = matrix
+        max_length = 0
+        for i in range(self._num_row):
+            for j in range(self._num_col):
+                max_length = max(self._dfs(i, j), max_length)
+        print(np.array(self._memo))
+        return max_length
+
+    def _dfs(self, i, j):
+        if self._visited[i][j]:  # 每个节点仅被访问一次
+            return self._memo[i][j]
+        current_max = 1
+        di = [1, -1, 0, 0]
+        dj = [0, 0, -1, 1]
+        for idx in range(4):
+            ii = i + di[idx]
+            jj = j + dj[idx]
+            if ii >=0 and ii < self._num_row and jj >=0 and jj < self._num_col:
+                if self._matrix[ii][jj] > self._matrix[i][j]:
+                    current_max = max(current_max, self._dfs(ii, jj) + 1)
+        # 第一个完成访问的节点，必然是拥有最大值的节点，因为其“最深”
+        self._visited[i][j] = True
+        self._memo[i][j] = current_max
+        print(self._matrix[i][j])
+        return current_max
+</code></pre>
+
+### Follow up: Coins in a Line 记忆化搜索与博弈
+
+There are **n** coins in a line. Two players take turns to take one or two coins from right side until there are no more coins left. The player who take the last coin wins.
+
+Could you please decide the first play will win or lose?
+
+Example
+n = 1, return true.
+n = 2, return true.
+n = 3, return false.
+n = 4, return true.
+n = 5, return true.
+
+## 3. 背包
+
 **所有的背包问题都可以转换为01背包**
-
 01背包当前状态计算与子问题的考量：
 当前考虑将第 i 个物品放入 体积为 V 的背包，有两种选择
 
@@ -408,3 +518,4 @@ class BKPK:
     def backpack_dependency():
         pass
 <code><pre>
+
