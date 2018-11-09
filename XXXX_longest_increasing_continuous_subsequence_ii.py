@@ -31,13 +31,15 @@ class Solution:
         self._num_row = len(matrix)
         self._num_col = len(matrix[0])
         self._visited = [[False for _ in range(self._num_col)] for _ in range(self._num_row)]
-        self._memo = [[0 for _ in range(self._num_col)] for _ in range(self._num_row)]
+        self._memo = [[1 for _ in range(self._num_col)] for _ in range(self._num_row)]
         self._matrix = matrix
+        max_length = 0
         for i in range(self._num_row):
             for j in range(self._num_col):
-                self._dfs(i, j)
+                max_length = max(self._dfs(i, j), max_length)
         print(np.array(self._memo))
-        
+        return max_length
+
     def _dfs(self, i, j):
         if self._visited[i][j]:  # 每个节点仅被访问一次
             return self._memo[i][j]
@@ -50,6 +52,7 @@ class Solution:
             if ii >=0 and ii < self._num_row and jj >=0 and jj < self._num_col:
                 if self._matrix[ii][jj] > self._matrix[i][j]:
                     current_max = max(current_max, self._dfs(ii, jj) + 1)
+        # 第一个完成访问的节点，必然是拥有最大值的节点，因为其“最深”
         self._visited[i][j] = True
         self._memo[i][j] = current_max
         print(self._matrix[i][j])
