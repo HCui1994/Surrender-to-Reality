@@ -1,6 +1,6 @@
-"""Brutal! TLE ..... """
 class Solution:
     def maximum_square_brutal(self, matrix):
+        """Brutal, TLE ..... """
         max_area = 0
         for y1 in range(len(matrix)):
             for x1 in range(len(matrix[0])):
@@ -19,6 +19,7 @@ class Solution:
 
     def maximum_square_dp(self, matrix):
         """
+        dp solution
         若某个点是一个正方形的右下角，则其 1.左侧 2.上侧 3.左上侧 三个点一定也是某个正方形的右下角
         初始化就是matrix自身
         """
@@ -40,6 +41,18 @@ class Solution:
                     max_edge = matrix[row][col]
         return max_edge ** 2
         # print(max(matrix))
+
+
+
+"""
+1 1 1 0 1 
+1 2 2 1 0
+1 2 3 X 0
+0 0 0 0 0
+
+X = ? min(2, 3, 1) + 1 = 2
+"""
+
 
 
 matrix = [["0","0","0"],["0","0","1"],["0","0","0"],["0","0","0"]]
