@@ -88,7 +88,7 @@ class Solution:
         print(memo_local_min)
 
     def max_product_mem_opt_dp(self, nums):
-        """ 这个方法真是好理解， 为什么自己想不到 """
+        """ 这个方法真是好理解，为什么自己想不到 """
         length = len(nums)
         local_max = local_min = nums[0]
         global_max = local_max
