@@ -23,6 +23,8 @@ class Solution:
         product_n = max_i(product_(n-i) * (n-i))
         product_(n-i) 即是子问题的解 
         """
+        if n < 4:
+            return n - 1
         memo = [0 for _ in range(n + 1)]
         memo[2], memo[3] = 1, 2
         for i in range(4, n + 1, +1):
@@ -40,7 +42,7 @@ class Solution:
         print(memo)
 
     def test(self):
-        n = 10
+        n = 2
         self.integer_break(n)
 
 
