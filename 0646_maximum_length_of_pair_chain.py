@@ -14,6 +14,9 @@ The number of given pairs will be in the range [1, 1000].
 """
 
 class Solution:
+    """
+    0252_meeting_room 0253_meeting_room 的简化版本
+    """
     def find_longest_chain(self, pairs):
         def key(element):
             return element[1]
