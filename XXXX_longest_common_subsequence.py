@@ -26,7 +26,7 @@ class Solution:
     def longest_common_subsequence(self, x, y):
         if not x or not y:
             return 0
-        memo = [[0 for _ in range(len(x) + 1)] for _ in range(len(y) + 1)]
+        memo = [[0 for _ in range(len(y) + 1)] for _ in range(len(x) + 1)]
         for i in range(len(x)):
             memo_i = i + 1
             for j in range(len(y)):
@@ -45,7 +45,7 @@ class Solution:
 
     def test(self):
         x = "qwertyuiop"
-        y = "q e t u o "
+        y = "q e t u o"
         self.longest_common_subsequence(x, y)
     
 
