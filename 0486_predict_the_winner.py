@@ -40,7 +40,7 @@ class Solution:
         # 初始化， 只有一个数字的时候，player 1 总获胜
         for i in range(len(nums)):
             memo[i][i + 1] = [nums[i], nums[i]]
-        print(np.array(memo).shape)
+        # print(np.array(memo).shape)
         for l in range(2, len(nums) + 1, +1):
             for i in range(0, len(nums) - 1, +1):
                 j = i + l
