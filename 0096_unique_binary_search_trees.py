@@ -12,6 +12,7 @@ class Solution:
 
     def num_trees(self, n):
         """
+        因为是二叉搜索树，在根节点位置确定时，子问题便是左子树和右子树分别有多少种可能性
         num nodes       num trees           (root num sub trees)
         0               0
         1               1
