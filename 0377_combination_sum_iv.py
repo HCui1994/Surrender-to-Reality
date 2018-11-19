@@ -62,18 +62,33 @@ class Solution:
 
 
     def combination_sum_4_dp(self, nums, target):
-        """ dp 能不能快一点？ """
+        """ 
+        dp 能不能快一点？ 
+        much faster
+        """
         if not nums:
             return 0
         # memo[i] 表示 target == 1 时，有多少种方法
-        memo = [None for _ in range(target + 1)]
-        memo[0] = 
+        memo = [0 for _ in range(target + 1)]
+        memo[0] = 0
+        for tgt in range(1, target + 1, +1):
+            for num in nums:
+                if tgt - num < 0:
+                    pass
+                elif tgt - num == 0:
+                    print(tgt, num, memo)
+                    memo[tgt] += 1
+                else:
+                    memo[tgt] += memo[tgt - num]
+                    print(tgt, num, memo)
+        return memo[-1]
+
 
 
     def test(self):
-        nums = [1, 2, 3]
+        nums = [1, 2]
         target = 4
-        ans = self.combination_sum_4_recursion_with_memoization(nums, target)
+        ans = self.combination_sum_4_dp(nums, target)
         print(ans)
 
 
