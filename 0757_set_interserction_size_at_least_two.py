@@ -112,22 +112,22 @@ class Solution:
         # 初始化：
         interval = intervals[0]
         ans = [-1 for _ in range(k)]
-        for interval in intervals[1:]:
-            print(ans)
-            for i in range(k):
+        for interval in intervals:
+            # print(ans, interval)
+            for i in range(1, k + 1):
                 # 结果集合从大到小遍历，找到当前区间与结果集合的交集大小是多少
-                if interval[0] < ans[-1 - i]:
+                if interval[0] > ans[-i]:
                     # 如果 当前区间起始小于等于结果集和第 i 大的数，继续遍历
                     # 直到发现当前区间的起始大于等于结果集和中第 i 大的数
                     # 说明当前区间中有 i 个数在结果集合中，需要再加入 k - i 个数
                     break
-            print(i)
+            # print(i)
             temp_ans = []
-            for j in range(i):
+            for j in range(k - i):
+                temp_ans.append(interval[1] - j)
                 print(temp_ans)
-                temp_ans.append(interval[1] - i)
             ans += temp_ans[::-1]
-        
+        print(ans)
         return len(ans) - k
                 
 
@@ -136,7 +136,7 @@ class Solution:
     def test(self):
         intervals = [[12,19],[18,25],[4,6],[19,24],[19,22]]
         # print(self.interserction_size_two(intervals))
-        # print(self.interserction_size_two_2(intervals))
+        print(self.interserction_size_two_2(intervals))
         print(self.interserction_size_k(intervals, 2))
 
 
