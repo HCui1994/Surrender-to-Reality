@@ -40,9 +40,12 @@ Note:
 class Solution:
     def is_bipartite_bfs(self, graph):
         """
+        二分图问题
         如果两个 vertice 之间有 edge，则必然不可能在同一个 set 中
-        不能按照任意顺序来访问边，应采用 bfs 或 dfs
-        注意，可能不是连通图，需要 visited 列表保存已访问过的节点
+        不能按照任意顺序来访问边，应采用 bfs 或 dfs，需要 visited 列表保存已访问过的节点
+        注意，可能不是连通图
+        每次访问到一个节点，根据遍历过程中其前置节点，将它添加到 A 或 B 某个集合中。注意，已经访问到的节点若再次遍历到，还应再添加一遍
+        最后若两个集合有交集，则必然不是二分图
         """
         if not graph:
             return True
@@ -55,6 +58,8 @@ class Solution:
                 while queue:
                     v1, tag= queue.pop(0)
                     sets[tag].add(v1)
+                    if v1 in sets[not tag]:
+                        return False
                     if v1 in visited:
                         continue
                     visited.add(v1)
