@@ -49,6 +49,40 @@ class TreeNode:
         self.left = None
         self.right = None
 
+    def stringToTreeNode(input):
+        input = input.strip()
+        input = input[1:-1]
+        if not input:
+            return None
+
+        inputValues = [s.strip() for s in input.split(',')]
+        root = TreeNode(int(inputValues[0]))
+        nodeQueue = [root]
+        front = 0
+        index = 1
+        while index < len(inputValues):
+            node = nodeQueue[front]
+            front = front + 1
+
+            item = inputValues[index]
+            index = index + 1
+            if item != "null":
+                leftNumber = int(item)
+                node.left = TreeNode(leftNumber)
+                nodeQueue.append(node.left)
+
+            if index >= len(inputValues):
+                break
+
+            item = inputValues[index]
+            index = index + 1
+            if item != "null":
+                rightNumber = int(item)
+                node.right = TreeNode(rightNumber)
+                nodeQueue.append(node.right)
+        return root
+
+
 class Solution:
     # def find_closest_leaf(self, root : TreeNode, k):
     #     """
@@ -69,8 +103,12 @@ class Solution:
 
     def __init__(self):
         self._root = None
+        self._min_height = {}
 
     def find_closest_leaf_tree_to_graph(self, root : TreeNode, k):
+        """
+        将树转换为无向无环图，再做 dfs 
+        """
         self._root = root.val
         graph = {root.val : set([])}
         if root.left:
@@ -110,3 +148,86 @@ class Solution:
         for succ in succ_set:
             self._dfs(succ, graph, visited, tip, path_length)
         
+    def find_closest_leaf_2(self, root : TreeNode, k):
+        """
+        对于每个内部节点，都可以算出最小高度。用一次遍历记录这个最小高度        
+        与目标最近的叶节点与目标必有公共最低祖先节点
+        """
+        min_height = {}
+        dist_to_k = {}
+        self._record_min_heieght(root, min_height)
+        for key in min_height:
+            dist_to_k[key] = float("inf")
+        self._dist_to_target(root, k, dist_to_k)
+        nearest = float("inf")
+        nearest_leaf = None
+        return min(dist_to_k[node] + min_height[node] for node in dist_to_k.keys())
+    
+    def _record_min_heieght(self, node : TreeNode, min_height):
+        if not node.left and not node.right:
+            min_height[node.val] = 0
+            return 0
+        left_height, right_height = float("inf"), float("inf")
+        if node.left:
+            left_height = min(left_height, self._record_min_heieght(node.left, min_height))
+        if node.right:
+            right_height = min(right_height, self._record_min_heieght(node.right, min_height))
+        min_height[node.val] = min(left_height, right_height) + 1
+        return min_height[node.val]
+
+    def _dist_to_target(self, node : TreeNode, k, dist_to_k):
+        if not node:
+            return float("inf")
+        if node.val == k:
+            dist_to_k[node.val] = 0
+            return 0
+        dist_to_k[node.val] = min(self._dist_to_target(node.left, k, dist_to_k), self._dist_to_target(node.right, k, dist_to_k)) + 1
+        return dist_to_k[node.val]
+            
+
+
+
+def stringToTreeNode(input):
+    input = input.strip()
+    input = input[1:-1]
+    if not input:
+        return None
+
+    inputValues = [s.strip() for s in input.split(',')]
+    root = TreeNode(int(inputValues[0]))
+    nodeQueue = [root]
+    front = 0
+    index = 1
+    while index < len(inputValues):
+        node = nodeQueue[front]
+        front = front + 1
+
+        item = inputValues[index]
+        index = index + 1
+        if item != "null":
+            leftNumber = int(item)
+            node.left = TreeNode(leftNumber)
+            nodeQueue.append(node.left)
+
+        if index >= len(inputValues):
+            break
+
+        item = inputValues[index]
+        index = index + 1
+        if item != "null":
+            rightNumber = int(item)
+            node.right = TreeNode(rightNumber)
+            nodeQueue.append(node.right)
+    return root
+
+
+def test():
+    string = "[1,2,3,4,null,null,null,5,null,6]"
+    root = stringToTreeNode(string);
+    k = 4
+            
+    ans = Solution().find_closest_leaf_2(root, k)
+    print(ans)
+
+if __name__ == '__main__':
+    test()
