@@ -1,4 +1,3 @@
-
 """
 Equations are given in the format A / B = k, where A and B are variables represented as strings, and k is a real number (floating point number). 
 Given some queries, return the answers. If the answer does not exist, return -1.0.
@@ -31,6 +30,7 @@ class Solution:
         """
         图问题
         先建图，之后dfs
+        每个查询的结果即为从分子遍历到分母，路径中边权值的乘积
         """
         graph, edges, vertices = self._build_graph(equations, values)
         res = []
@@ -64,6 +64,7 @@ class Solution:
             a, b = equations[i]
             vertices.add(a)
             vertices.add(b)
+            # 添加自回路
             edges[a, a] = 1.
             edges[b, b] = 1.
             edges[a, b] = values[i]
