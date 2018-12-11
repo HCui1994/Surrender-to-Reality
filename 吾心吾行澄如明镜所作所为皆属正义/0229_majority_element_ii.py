@@ -1,5 +1,6 @@
 """
 Given an integer array of size n, find all elements that appear more than ⌊ n/3 ⌋ times.
+
 Note: The algorithm should run in linear time and in O(1) space.
 
 Example 1:
@@ -11,14 +12,31 @@ Input: [1,1,1,3,3,2,2,2]
 Output: [1,2]
 """
 
+import collections
+
+
 class Solution:
-    def majorityElement(self, nums):
-        """ 
-        思路：摩尔投票升级版，超过n/3的数最多只能有两个；
-        先选出两个候选人A,B,遍历数组，如果投A（等于A），则A的票数++;如果投B，B的票数++；
-        如果A,B都不投（即与A，B都不相等）,那么检查此时是否AB中候选人的票数是否为0，如果为0,则成为新的候选人；
-        如果A,B两个人的票数都不为0，那么A,B两个候选人的票数均--；
+    def majority_elements_brutal(self, nums):
+        """
+        限定空间复杂度 O(1), 不能使用 dict。错解
+        """
+        word_dict = collections.Counter(nums)
+        res = []
+        length = len(nums)
+        for key, value in word_dict.items():
+            if value > length // 3:
+                res.append(key)
+        return res
+
+    def majority_elements_moore_voting(self, nums):
+        """
+        思路：摩尔投票升级版，超过 n//3 的数最多只能有两个；
+        先选出两个候选人 A, B, 遍历数组，如果投A（等于A），则 A 的票数++; 如果投 B ，B 的票数++；
+        如果 A, B 都不投（即与 A，B 都不相等）,那么检查此时是否 A B 中候选人的票数是否为0，如果为0, 则成为新的候选人；
+        如果 A, B 两个人的票数都不为0，那么 A, B 两个候选人的票数均--；
         遍历结束后选出两个候选人，但是这两个候选人是否满足>n/3，还需要再遍历一遍数组，找出两个候选人的具体票数
+        
+        count_a count_b 代表了最多的两个票数和第三票数的差
         """
         if not nums:
             return []
@@ -56,3 +74,10 @@ class Solution:
         if len(nums) // 3 < count_b:
             res.append(candidate_b) 
         return res
+
+    def test(self):
+        nums = [1, 1, 1, 3, 3, 2, 2, 2]
+        print(self.majority_elements_moore_voting(nums))
+
+
+Solution().test()
