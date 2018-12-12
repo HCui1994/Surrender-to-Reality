@@ -35,41 +35,47 @@ class Solution:
 
     def _dfs(self, board, i, j, m, n, trie, res):
         """
-        用字典树深度限制遍历深度
+        在进入子分支前进行边界检测会导致bug
+        假设　 board = ['a']， word = ["a"]
+        建立 trie = {'a' : "final" : "a"}}
+        由于 board 只有一个格子，向四个方向均无法延伸，算法终止，而无法达到 trie 树的叶节点
+
+        相反，在进入子分支后再进行边界检测，即使超界也可达到 trie 树叶节点。
+        而若能达到叶节点，说明在超界之前已经完成所有匹配
         """
-        print(trie, board[i][j])
         if trie.get("final"):
+            # 如果当前走到了叶节点，将 word 添加到 结果 res 中
             res.append(trie["final"])
-            trie["final"] = None        # 防止 duplicate
-        if board[i][j] not in trie.keys():
+            trie["final"] = None    # 设置叶节点为 None，防止重复添加
             return
-        di = [-1, 1, 0, 0]
-        dj = [0, 0, 1, -1]
-        char, board[i][j] = board[i][j], '#'  # 保存当前状态，以便在结束分支时还原状态，设置当前分支已访问
+        if i < 0 or i == m or j < 0 or j == n:
+            # 判断越界
+            return
+        if board[i][j] not in trie.keys():
+            # 如果在 trie 树当前层中找不到当前字母，trie 树遍历终止
+            return
+        di, dj = [1, -1, 0, 0], [0, 0, 1, -1]
+        char, board[i][j] = board[i][j], '#' # 保存当前状态，置当前状态为 visited
         for direction in range(4):
-            ii = i + di[direction]
-            jj = j + dj[direction]
-            if ii >= 0 and ii < m and jj >= 0 and jj < n and board[ii][jj]:
-                self._dfs(board, ii, jj, m, n, trie[char], res)
-        board[i][j] = char
-    
+            self._dfs(board, i + di[direction], j + dj[direction], m, n, trie[char], res)
+            # ii, jj = i + di[direction], j + dj[direction]
+            # if ii >= 0 and ii < m and jj >= 0 and jj < n:  
+            #     self._dfs(board, ii, jj, m, n, trie[char], res) # trie[char] 进入 trie 树下一层
+        board[i][j] = char  # 当前分支结束，回复当前状态 unvisited
+
     def _build_trie(self, words):
-        trie = {}   # 设置 trie 树根节点引用，防止丢失
+        trie = {}
         for word in words:
-            cur = trie
+            foucs = trie
             for char in word:
-                cur = cur.setdefault(char, {})
-            cur['final'] = word
-        print(trie)
+                foucs = foucs.setdefault(char, {})
+            foucs["final"] = word
+        # print(trie)
         return trie
 
     def test(self):
-        words = ["oath","pea","eat","rain"]
-        board =[['o','a','a','n'],
-                ['e','t','a','e'],
-                ['i','h','k','r'],
-                ['i','f','l','v']
-        ]
+        words = ["aa"]
+        board = [["a"]]
         print(self.find_words(board, words))
 
 
