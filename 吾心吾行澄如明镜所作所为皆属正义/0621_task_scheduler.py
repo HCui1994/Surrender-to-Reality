@@ -91,7 +91,7 @@ class Solution:
         for task, task_num in tasks_counter.items():
             if task_num == majority_num:
                 majority_dup += 1
-        part_count = majority_num - 1
+        part_count = majority_num - 1   # 
         part_length = n - (majority_dup - 1)
         empty_slots = part_count * part_length
         tasks_left = len(tasks) - majority_num * majority_dup
