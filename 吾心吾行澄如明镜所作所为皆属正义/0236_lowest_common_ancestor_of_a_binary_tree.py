@@ -68,4 +68,20 @@ class Solution:
         else:
             return sum([itself, left, right])
 
+
+    def lowest_common_ancestor_iterative_without_parent_pointer(self, root, p, q):
+        stack = [root]
+        lca_index = None
+        while stack:
+            node = stack.pop()
+            if (node == p or node == q) and lca_index is None:
+                lca_index = len(stack)
+            else:
+                return stack[lca_index]
+            if node.left:
+                stack.append(node.left)
+            if node.right:
+                stack.append(node.right)
+        
+
         
