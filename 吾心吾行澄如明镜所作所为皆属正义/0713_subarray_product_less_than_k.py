@@ -17,7 +17,7 @@ Note:
 
 
 class Solution:
-    def num_subarray_product_less_than_k_nontrivial_sliding_window(
+    def num_subarray_product_less_than_k_sliding_window(
             self, nums, k):
         """
         left 指针从 0 开始
@@ -41,26 +41,12 @@ class Solution:
         print(count)
         return count
 
-    def num_subarray_product_less_than_k_sliding_window(self, nums, k):
-        if k <= 1:
-            return 0
-        count = 0
-        product = 1
-        left = right = 0
-        while right < len(nums):
-            if left == right:
-                right += 1
-                product = nums[left]
-                continue
-            if product < k:
-                count += 1
-
     def test(self):
         nums = [10, 5, 2, 6]
         k = 100
         self.num_subarray_product_less_than_k_nontrivial_sliding_window(
             nums, k)
-        self.num_subarray_product_less_than_k_sliding_window(nums, k)
+        # self.num_subarray_product_less_than_k_sliding_window(nums, k)
 
 
 Solution().test()
