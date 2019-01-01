@@ -119,19 +119,20 @@ class Solution(object):
         counter = collections.Counter()
         left = res = 0
         for right, fruit_type in enumerate(tree):
+            print(left, right)
             counter[fruit_type] += 1
             while len(counter) > 2:
                 # 循环条件：counter 中统计了超过两个数字
                 counter[tree[left]] -= 1
                 if counter[tree[left]] == 0:
-                    del counter[tree[right]]
+                    del counter[tree[left]]
                 print(counter)
                 left += 1
             res = max(res, right - left + 1)
         return res
 
     def test(self):
-        tree = [3, 3, 3, 1, 2, 1, 1, 2, 3, 3, 4]
+        tree = [1, 0, 2, 3, 4]
         self.total_fruit_two_pointers(tree)
 
 

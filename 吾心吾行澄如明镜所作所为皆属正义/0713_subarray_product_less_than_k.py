@@ -44,8 +44,7 @@ class Solution:
     def test(self):
         nums = [10, 5, 2, 6]
         k = 100
-        self.num_subarray_product_less_than_k_nontrivial_sliding_window(
-            nums, k)
+        self.num_subarray_product_less_than_k_sliding_window(nums, k)
         # self.num_subarray_product_less_than_k_sliding_window(nums, k)
 
 
