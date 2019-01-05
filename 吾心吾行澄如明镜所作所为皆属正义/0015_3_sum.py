@@ -14,6 +14,7 @@ A solution set is:
 ]
 """
 
+
 class Solution(object):
     def three_sum(self, nums):
         """
@@ -78,9 +79,7 @@ class Solution(object):
             if (nums[i], nums[i + 1], nums[i + 2]) == (0, 0, 0):
                 res.add((0, 0, 0))
 
-
         return list(res)
-
 
     def three_sums_two_counter(self, nums):
         import collections
@@ -107,42 +106,68 @@ class Solution(object):
                     res.add(tuple(sorted([a, b, c])))
         return list(res)
 
+    # def three_sum_two_pointers(self, nums):
+    #     nums.sort()
+    #     N, result = len(nums), []
+    #     if N < 3:
+    #         return result
+    #     for i in range(N - 2):
+    #         if i > 0 and nums[i] == nums[i - 1]:
+    #             continue
+    #         target = -nums[i]  # 遍历数列，从 0 到 n - 2，将当前数字作为第一个数字
+    #         left = i + 1  # 当前数字的后一个作为 left
+    #         right = N - 1   # 数列的最后一个数字作为 right
+    #                         # 在数列 nums[left .. right] 中寻找剩下的两个数
+    #         while left < right:
+    #             twoSum = nums[left] + nums[right]
+    #             if twoSum > target:
+    #                 # 如果 left + right 比 target 要大，说明，算多了，要减少
+    #                 right -= 1
+    #             elif twoSum < target:
+    #                 # 如果比 target 要小，说明算少了，要增加
+    #                 left += 1
+    #             else:
+    #                 result.append([nums[i], nums[left], nums[right]])
+    #                 left += 1
+    #                 right -= 1
+    #                 while left < N and nums[left-1] == nums[left]:
+    #                     # 手动去重，如果下一个 left 和当前 left 相等，left 继续向右侧推进
+    #                     left += 1
+    #                 while right > 0 and nums[right+1] == nums[right]:
+    #                     # right 同理
+    #                     right -= 1
+    #     return result
+
     def three_sum_two_pointers(self, nums):
         nums.sort()
-        N, result = len(nums), []
-        if N < 3: 
-            return result
-        for i in range(N - 2):
-            if i > 0 and nums[i] == nums[i - 1]:
-                # 寻找左侧指针，如果遇到重复的，跳过，尽量减少循环次数
+        if len(nums) < 3 or nums[0] > 0 or nums[-1] < 0:
+            return []
+        length = len(nums)
+        res = []
+        for ai in range(length - 2):
+            if ai > 0 and nums[ai] == nums[ai - 1]:
                 continue
-            left = i + 1
-            right = N - 1
-            target = -nums[i]
-            while left < right:
-                twoSum = nums[left] + nums[right]
-                if twoSum > target:
-                    # 如果 a+c+b>0
-                    right -= 1
-                elif twoSum < target:
-                    left += 1
+            a = nums[ai]
+            b_plus_c = 0 - a
+            bi, ci = ai + 1, length - 1
+            while bi < ci:
+                b, c = nums[bi], nums[ci]
+                if b + c < b_plus_c:
+                    bi += 1
+                elif b + c > b_plus_c:
+                    ci -= 1
                 else:
-                    result.append([nums[i], nums[left], nums[right]])
-                    left += 1
-                    right -= 1  
-                    while left < N and nums[left-1] == nums[left]:
-                        left += 1 
-                    while right > 0 and nums[right+1] == nums[right]:
-                        right -= 1  
-        return result
-
-        
+                    res.append([a, b, c])
+                    bi, ci = bi + 1, ci - 1
+                    while bi < length - 1 and nums[bi] == nums[bi - 1]:
+                        bi += 1
+                    while ci > 2 and nums[ci] == nums[ci + 1]:
+                        ci -= 1
+        return res
 
     def test(self):
-        nums = [-1,0,1,2,-1,-4]
-        print(self.three_sums_2(nums))
+        nums = [-1, -1, -1, -1, -3, -2, -2, 0, 0, 0, 0, 0, 4]
+        print(self.three_sum_two_pointers(nums))
 
 
 Solution().test()
-
-        

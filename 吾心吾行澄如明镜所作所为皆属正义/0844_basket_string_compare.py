@@ -57,20 +57,10 @@ class Solution(object):
         else:
             return False
 
-    def backspace_compare_two_pointers(self, s, t):
-        """
-        尝试双指针降低空间复杂度
-        """
-        s, t = s[::-1], t[::-1]
-        ptr_s, ptr_t = len(s) - 1, len(t) - 1
-        while ptr_s > 0 or ptr_t > 0:
-            if 
-
     def test(self):
         s = "a##c"
         t = "#a#cbb"
         print(self.backspace_compare_stack(s, t))
-
 
 
 Solution().test()
