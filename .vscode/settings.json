@@ -5,7 +5,7 @@
     "workbench.iconTheme": "eq-material-theme-icons-darker",
     "python.pythonPath": "python3",
     "python.jediEnabled": false,
-    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Enabled": false,
     "python.formatting.provider": "autopep8",
     "python.linting.pylintEnabled": true,
 }

@@ -122,8 +122,13 @@ class Solution(object):
         类似于 LCS？
         分析：
         若 string[i] == pattern[j] or pattern[j] == '.'，则 dp[i][j] = dp[i - 1][j - 1]
-        若 pattern[j] == '*',
+        若 pattern[j] == '*'
+            若 string[i] == pattern[j - 1]，则 dp[i][j] = dp[i - 1][j - 1]
         """
+        len_string, len_pattern = len(string), len(pattern)
+        dp = [[False for _ in range(len_pattern + 1)] for _ in range(len_string + 1)]
+        for i in range(len_string):
+            for j in range(len_pattern):
 
 
     def test(self):
