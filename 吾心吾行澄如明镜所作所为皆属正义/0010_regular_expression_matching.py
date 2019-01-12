@@ -120,16 +120,74 @@ class Solution(object):
         """
         dp[i][j] 代表 string[:i] 和 pattern[:j] 能否匹配
         类似于 LCS？
-        分析：
-        若 string[i] == pattern[j] or pattern[j] == '.'，则 dp[i][j] = dp[i - 1][j - 1]
-        若 pattern[j] == '*',
-        """
+        
+        初始化：
+        case1：string 与 pattern 均为空串时，显然匹配 => dp[0][0] = True
+        case2：string 非空而 pattern 为空串时，显然不匹配 => dp[i][0] = False, where i > 0
+        case3：string 为空串而 pattern 非空时：
+            case3.1：pattern 仅有一位，不论 pattern 为何，军无法匹配 => dp[0][1] = False
+            case3.2：pattern 有两位：
+                case3.2.1：pattern = "**"，是无效的模式，dp[0][2] = False
+                case3.2.2：pattern = "aa" or pattern = ".a" or pattern =  ".." => dp[0][2] = False
+                case3.2.3：pattern = "a*" or pattern = ".*" => dp[0][2] = True
+            case3.3：pattern 有大于两位，无法与空 string 匹配 => dp[0][j] = False, j > 2
+        初始化完成
 
+        转移方程：
+        case1：若 string[i] = pattern[j] or pattern[j] = '.'，则在当前位上模式与文本相匹配，则 dp[i][j] 的状态取决于模式与文本前一位的状态，dp[i - 1][j - 1]
+        case2：当前位不匹配
+            case2.1：pattern[j] = '*'：
+                case2.1.1：pattern[j - 1] = '*'：连续的两个星号，是不合法的模式，直接返回false
+                case2.1.2：pattern[j - 1] = string[i]：模式 * 前一位与文本的当前位匹配，相当于模式中的 "a*" 匹配了文本中的 1 个字符，即当前字符 => dp[i][j] = dp[i][j - 1]
+                case2.1.3：pattern[j - 1] != string[i]：模式 * 前一位与文本的当前位不匹配，相当于模式中的 "a*" 匹配了文本中的 0 个字符 => dp[i][j] = dp[i][j - 2]
+            case2.2：当前模式位不是 *，且无法与当前文本为匹配 => dp[i][j] = false
+        """
+    def match(self, s, p):
+        return s == p or p == '.'
+    
+    def is_match_dp(self, s, p):
+        if s and not p:
+            return False
+        s_len, p_len = len(s), len(p)
+        dp = [[None for _ in range(p_len + 1)] for _ in range(s_len + 1)]
+        # init
+        dp[0][0] = True
+        for i in range(s_len):
+            dpi = i + 1
+            dp[dpi][0] = False # empty pattern cannot match non-empty string
+        for j in range(p_len):
+            dpj = j + 1
+            for j in range(1, p_len):
+                if p[j] == '*':
+                    dp[0][dpj] = dp[0][dpj - 2]
+        # transition function
+        for i in range(s_len):
+            dpi = i + 1
+            for j in range(p_len):
+                dpj = j + 1
+                if self.match(s[i], p[j]):
+                    dp[dpi][dpj] = dp[dpi - 1][dpj - 1]
+                elif p[j] == '*' and not self.match(s[i], p[j - 1]):
+                    # meets *, previous pattern symbol cannot match current string symbol <=> "a*" match 0 symbol
+                    dp[dpi][dpj] = dp[dpi][dpj - 2]
+                elif p[j] == '*' and self.match(s[i], p[j - 1]):
+                    # meets *, previous pattern symbol matches current string symbol <=> "a*" matches at least 1 symbol
+                    match_one = dp[dpi - 1][dpj - 2]
+                    match_more_than_one = dp[dpi - 1][dpj]
+                    dp[dpi][dpj] = match_one or match_more_than_one
+                else:
+                    dp[dpi][dpj] = False
+        import numpy as np
+        print(np.array(dp))
+        return dp[-1][-1]
+
+    def match_dp(self, s, p):
+        return s == p or p == '.'
 
     def test(self):
-        s = "a"
-        p = "ab*"
-        print(self.is_match_nfa(s, p))
+        s = "mississippi"
+        p = "mis*is*p*."
+        print(self.is_match_dp(s, p))
 
 
 Solution().test()

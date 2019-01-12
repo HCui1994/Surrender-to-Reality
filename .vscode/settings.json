@@ -1,11 +1,11 @@
 {
     "terminal.integrated.fontFamily": "Menlo for Powerline",
-    "terminal.integrated.shell.osx": "/bin/zsh",
+    // "terminal.integrated.shell.osx": "/bin/zsh",
     "workbench.colorTheme": "Material Theme Darker High Contrast",
     "workbench.iconTheme": "eq-material-theme-icons-darker",
-    "python.pythonPath": "python3",
+    "python.pythonPath": "python",
     "python.jediEnabled": false,
-    "python.linting.flake8Enabled": true,
+    "python.linting.flake8Enabled": false,
     "python.formatting.provider": "autopep8",
     "python.linting.pylintEnabled": true,
 }
