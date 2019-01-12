@@ -120,7 +120,6 @@ class Solution(object):
         """
         dp[i][j] 代表 string[:i] 和 pattern[:j] 能否匹配
         类似于 LCS？
-<<<<<<< HEAD
         
         初始化：
         case1：string 与 pattern 均为空串时，显然匹配 => dp[0][0] = True
@@ -181,17 +180,6 @@ class Solution(object):
         import numpy as np
         print(np.array(dp))
         return dp[-1][-1]
-=======
-        分析：
-        若 string[i] == pattern[j] or pattern[j] == '.'，则 dp[i][j] = dp[i - 1][j - 1]
-        若 pattern[j] == '*'
-            若 string[i] == pattern[j - 1]，则 dp[i][j] = dp[i - 1][j - 1]
-        """
-        len_string, len_pattern = len(string), len(pattern)
-        dp = [[False for _ in range(len_pattern + 1)] for _ in range(len_string + 1)]
-        for i in range(len_string):
-            for j in range(len_pattern):
->>>>>>> d2e6e43e2a641216a22d80b23c5632e6e25603ff
 
     def match_dp(self, s, p):
         return s == p or p == '.'
