@@ -1,3 +1,4 @@
+<<<<<<< HEAD
 
 class Solution(object):
     def isMatch(self, s, p):
@@ -26,3 +27,16 @@ class Solution(object):
 
 
 Solution().test()
+=======
+class Shit:
+    def __init__(self):
+        self.string = "this is the new shit"
+
+    def __access(self):
+        return self.string
+
+
+shit = Shit()
+shit.shit = "wtf"
+print(shit.__attr__)
+>>>>>>> d2e6e43e2a641216a22d80b23c5632e6e25603ff

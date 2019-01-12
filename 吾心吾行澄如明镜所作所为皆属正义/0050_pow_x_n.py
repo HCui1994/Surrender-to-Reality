@@ -55,7 +55,6 @@ class Solution(object):
         while n > 0:
             if n % 2:
                 ans *= x
-            
             n //= 2
             try:
                 x **= 2
