@@ -29,15 +29,14 @@ class Sorter:
             # 左mark <= 右mark 且 左mark处元素小于轴
             while leftmark <= rightmark and list[leftmark] <= pivot:
                 leftmark += 1 # 下标完成了自增，但此时 list[leftmark] > pivot
-            
+
             while leftmark <= rightmark and list[rightmark] >= pivot:
-                rightmark -= 1 # 下标完成了自增，但此时 list[rightmark] < pivot
-            
+                rightmark -= 1 # 下标完成了自减，但此时 list[rightmark] < pivot
+
             if rightmark < leftmark: 
                 done = True
             else: # 直接互换
-                lsit[leftmark], list[rightmark] = list[rightmark], list[leftmark]
-        
+                list[leftmark], list[rightmark] = list[rightmark], list[leftmark]
         # 由于此时 rightmark < leftmark
         # 故实际上 list[rightmark] < pivot = list[first] < list[leftmark]
         list[first], list[rightmark] = list[rightmark], list[first]

@@ -3,7 +3,7 @@
     // "terminal.integrated.shell.osx": "/bin/zsh",
     "workbench.colorTheme": "Material Theme Darker High Contrast",
     "workbench.iconTheme": "eq-material-theme-icons-darker",
-    "python.pythonPath": "python",
+    "python.pythonPath": "/usr/local/bin/python3",
     "python.jediEnabled": false,
     "python.linting.flake8Enabled": false,
     "python.formatting.provider": "autopep8",

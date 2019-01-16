@@ -22,3 +22,4 @@ class Solution(object):
             if num2 in nums1:
                 res.append(num2)
         return res
+        
