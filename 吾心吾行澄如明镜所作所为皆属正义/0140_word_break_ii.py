@@ -83,12 +83,9 @@ class Solution(object):
         TLE ?? 
         """
         memo = {}
-        self.memoization_helper(string, word_dict, memo)
-        print(memo[string])
-        return memo[string]
+        return self.memoization_helper(string, word_dict, memo)
 
     def memoization_helper(self, string, word_dict, memo):
-        # print(string)
         if memo.get(string):
             return memo[string]
         if not string:
@@ -96,19 +93,19 @@ class Solution(object):
         res = []
         for word in word_dict:
             word_length = len(word)
-            if string[:word_length] == word:
-                # print(word, string, word_length)
-                valid_list = self.memoization_helper(string[word_length:], word_dict, memo)
-                for valid_seq in valid_list:
-                    res.append(word + (" " if valid_seq else "") + valid_seq)
+            if string[:word_length] != word:
+                continue
+            # print(word, string, word_length)
+            valid_list = self.memoization_helper(string[word_length:], word_dict, memo)
+            for valid_seq in valid_list:
+                res.append(word + (" " if valid_seq else "") + valid_seq)
         memo[string] = res
         return memo[string]
 
-
     def test(self):
-        s = "aaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa"
+        s = "aaaaaaaaaaaaaaaaaaaaabaaaaaaaaaaaaaa"
         wordDict = ["a","aa","aaa","aaaa","aaaaa","aaaaaa","aaaaaaa","aaaaaaaa","aaaaaaaaa","aaaaaaaaaa"]
-        self.word_break_memoization(s, wordDict)
+        print(self.word_break_memoization(s, wordDict))
 
 
 Solution().test()
