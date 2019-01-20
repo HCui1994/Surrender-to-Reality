@@ -146,6 +146,7 @@ class Solution(object):
         return s == p or p == '.'
     
     def is_match_dp(self, s, p):
+        import numpy as np
         if s and not p:
             return False
         s_len, p_len = len(s), len(p)
@@ -177,7 +178,7 @@ class Solution(object):
                     dp[dpi][dpj] = match_one or match_more_than_one
                 else:
                     dp[dpi][dpj] = False
-        import numpy as np
+        
         print(np.array(dp))
         return dp[-1][-1]
 

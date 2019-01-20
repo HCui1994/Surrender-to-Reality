@@ -1,11 +1,36 @@
-class Brutal(object):
+"""
+Given a non-empty string s and a dictionary wordDict containing a list of non-empty words, 
+    determine if s can be segmented into a space-separated sequence of one or more dictionary words.
 
-    def wordBreak(self, s, wordDict):
+Note:
+The same word in the dictionary may be reused multiple times in the segmentation.
+You may assume the dictionary does not contain duplicate words.
+
+Example 1:
+Input: s = "leetcode", wordDict = ["leet", "code"]
+Output: true
+Explanation: Return true because "leetcode" can be segmented as "leet code".
+
+Example 2:
+Input: s = "applepenapple", wordDict = ["apple", "pen"]
+Output: true
+Explanation: Return true because "applepenapple" can be segmented as "apple pen apple".
+             Note that you are allowed to reuse a dictionary word.
+
+Example 3:
+Input: s = "catsandog", wordDict = ["cats", "dog", "sand", "and", "cat"]
+Output: false
+"""
+
+
+class Solution(object):
+
+    def word_break(self, s, wordDict):
         self._string = s
         self._word_set = set(wordDict)
-        return self._word_breaker(self._string)
+        return self.recursion_breaker(self._string)
 
-    def _word_breaker(self, string):
+    def recursion_breaker(self, string):
         print(string)
         match_flag = False
         if string in self._word_set:
@@ -14,42 +39,32 @@ class Brutal(object):
             for word in self._word_set:
                 word_length = len(word)
                 if word == string[:word_length]:
-                    match_flag = match_flag or self._word_breaker(string[word_length:])
-        
-        return match_flag 
+                    match_flag = match_flag or self.recursion_breaker(
+                        string[word_length:])
+        return match_flag
+
+    def word_break_dp(self, string, word_dict):
+        def key(element):
+            return element[1]
+        word_dict = sorted([(word, len(word)) for word in word_dict], key=key)
+        # print(word_dict)
+        dp = [False for _ in range(len(string))]
+        # print(dp)
+        # 初始化
+        for word, length in word_dict:
+            if word == string[:length]:
+                dp[length - 1] = True
+        for i in range(len(string)):
+            for word, length in word_dict:
+                if i > length - 1 and word == string[i + 1 - length: i + 1]:
+                    dp[i] = dp[i] or dp[i - length]
+        print(dp)
+        return dp[-1]
+
+    def test(self):
+        s = "applepenapple"
+        wordDict = ["apple", "pen"]
+        print(self.word_break_dp(s, wordDict))
 
 
-
-class Memoization(object): # recursive dynamic programming?
-
-    def wordBreak(self, s, wordDict):
-        self._memo = [None for _ in range(len(s))]
-        self._word_set = set(wordDict)
-        result = self._word_breaker(string=s, position=0)
-        print(self._memo)
-
-    def _word_breaker(self, string, position):
-        print(string)
-        print(self._memo)
-        if string == "":
-            return True
-        elif self._memo[position] is not None:
-            return self._memo[position]
-        else:
-            for i in range(1, len(string), +1):
-                if string[:i] in self._word_set and self._word_breaker(string[i:], position+i):
-                    print("shitshitshithis")
-                    self._memo[position] = True
-                    return self._memo[position]
-            self._memo[position] = False
-            return self._memo
-
-
-
-
-
-
-s = "catandog"
-wordDict = ["cats", "dog", "sand", "and", "cat"]
-memoization = Memoization()
-print(memoization.wordBreak(s, wordDict))
+Solution().test()
