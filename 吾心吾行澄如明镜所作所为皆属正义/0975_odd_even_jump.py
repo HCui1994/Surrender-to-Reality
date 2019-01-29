@@ -54,3 +54,7 @@ Note:
 1 <= A.length <= 20000
 0 <= A[i] < 100000
 """
+
+class Solution(object):
+    def odd_even_jump(self, nums):
+        

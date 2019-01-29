@@ -2,7 +2,7 @@
     "terminal.integrated.fontFamily": "Menlo for Powerline",
     // "terminal.integrated.shell.osx": "/bin/zsh",
     "workbench.colorTheme": "Material Theme Darker High Contrast",
-    "workbench.iconTheme": "eq-material-theme-icons-darker",
+    "workbench.iconTheme": "material-icon-theme",
     "python.pythonPath": "/usr/local/bin/python3",
     "python.jediEnabled": false,
     "python.linting.flake8Enabled": false,

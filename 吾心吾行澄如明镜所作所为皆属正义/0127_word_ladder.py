@@ -28,6 +28,7 @@ Output: 0
 Explanation: The endWord "cog" is not in wordList, therefore no possible transformation.
 """
 
+
 class Solution:
     def ladder_length(self, begin_word, end_word, word_list):
         """
@@ -38,7 +39,7 @@ class Solution:
 
         投入湖面的石子泛起的涟漪一圈圈扩散，直到碰到湖中立起的一支荷花
         """
-        letter_bank = {idx : set() for idx in range(len(begin_word))}
+        letter_bank = {idx: set() for idx in range(len(begin_word))}
         for word in word_list:
             for idx in range(len(begin_word)):
                 letter_bank[idx].add(word[idx])
@@ -60,13 +61,53 @@ class Solution:
                         word_visited[next_word] = word_visited[current_word] + 1
                         queue.append(next_word)
         return 0
-                            
-    def test(self):
-        begin_word = "hit"
-        end_word = "cog"
-        word_list = ["hot","dot","dog","lot","log","cog"]
-        print(self.ladder_length(begin_word, end_word, word_list))
 
+    def ladder_length_double_bfs(self, begin_word, end_word, word_list):
+        word_list = set(word_list)
+        if end_word not in word_list:
+            return 0
+        # preprocess
+        letter_bank = {idx: set() for idx in range(len(begin_word))}
+        for word in word_list:
+            for idx in range(len(begin_word)):
+                letter_bank[idx].add(word[idx])
+
+        begin_set, end_set = set([begin_word]), set([end_word])
+        visited = set([begin_word, end_word])
+        path_len, word_len = 2, len(begin_word)
+        while begin_set and end_set:
+            
+            if len(begin_set) > len(end_set):
+                begin_set, end_set = end_set, begin_set
+            print(begin_set, end_set)
+            temp_set = set()
+            for word in begin_set:
+                word_to_list = list(word)
+                for idx in range(word_len):
+                    letter_backup = word_to_list[idx]
+                    for letter in letter_bank[idx]:
+                        word_to_list[idx] = letter
+                        next_word = "".join(word_to_list)
+                        if next_word in end_set:
+                            return path_len
+                        if next_word in word_list and next_word not in visited:
+                            temp_set.add(next_word)
+                            # visited.add(next_word)
+                    word_to_list[idx] = letter_backup
+            visited = visited.union(temp_set)
+            begin_set = temp_set
+            path_len += 1
+        return 0
+                        
+
+    def test(self):
+        # beginWord = "hit"
+        # endWord = "cog"
+        # wordList = ["hot","dot","dog","lot","log"]
+        beginWord = "hit"
+        endWord = "cog"
+        wordList = ["hot", "dot", "dog", "lot", "log", "cog"]
+        print(self.ladder_length_double_bfs(beginWord, endWord, wordList))
 
 
 Solution().test()

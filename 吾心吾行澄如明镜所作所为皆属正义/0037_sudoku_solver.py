@@ -3,64 +3,83 @@ import time
 
 
 class Solution:
-    def solveSudoku(self, board):
-        self.init_board = self.success_board = board
+    def solve_sudoku(self, board):
         self.board = board
-        self.col_seen = {x: set() for x in range(9)}
+        self.filler()
+        # print(self.board)
+
+    def filler(self):
+        print(np.array(self.board))
+        # time.sleep(0.1)
+        print()
+        i, j = self.find_blank()
+        if i == -1 and j == -1:
+            return True
+        for digit in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
+            if not self.check(i, j, digit):
+                continue
+            self.board[i][j] = digit
+            if self.filler():
+                return True
+            self.board[i][j] = '.'
+        return False
+
+    def find_blank(self):
+        for i in range(9):
+            for j in range(9):
+                if self.board[i][j] == '.':
+                    return i, j
+        return -1, -1
+
+    def check(self, i, j, val):
+        row_seen = set([self.board[i][jj] for jj in range(9)]) - set('.')
+        col_seen = set([self.board[ii][j] for ii in range(9)]) - set('.')
+        block_seen = set([self.board[ii][jj] for ii in range(
+            i // 3 * 3, i // 3 * 3 + 3) for jj in range(j // 3 * 3, j // 3 * 3 + 3)])
+        return False if val in row_seen or val in col_seen or val in block_seen else True
+
+
+    def solve_sudoku_speed_boost(self, board):
+        self.board = board
         self.row_seen = {x: set() for x in range(9)}
+        self.col_seen = {x: set() for x in range(9)}
         self.block_seen = {x: set() for x in range(9)}
-        self.blank = set()
+        self.blanks = []
         for i in range(9):
             for j in range(9):
                 digit = board[i][j]
                 if digit == '.':
-                    start = (i, j)
-                    self.blank.add((i, j))
+                    self.blanks.append((i, j))
                 else:
-                    if digit in self.row_seen[i] or digit in self.col_seen[j] or digit in self.block_seen[i // 3 * 3 + j // 3]:
-                        return
-                    else:
-                        self.row_seen[i].add(digit)
-                        self.col_seen[j].add(digit)
-                        self.block_seen[i // 3 * 3 + j // 3].add(digit)
-        self.visited = set()
-        return self.filler(start[0], start[1])
+                    self.row_seen[i].add(digit)
+                    self.col_seen[j].add(digit)
+                    self.block_seen[i // 3 * 3 + j // 3].add(digit)
+        self.filler_speed_boost()
         
-
-    def filler(self, i, j):
-        if (i, j) not in self.blank:
-            return False
-        self.blank.remove((i, j))
-
-        all_digits = set(['1', '2', '3', '4', '5', '6', '7', '8', '9'])
-        occupied_row_digits = self.row_seen[i]
-        occupied_col_digits = self.col_seen[j]
-        occupied_block_digits = self.block_seen[i // 3 * 3 + j // 3]
-        available_digits = all_digits - occupied_row_digits - occupied_col_digits - occupied_block_digits
-        if not available_digits:
-            self.blank.add((i, j))
-            return False
-        if len(available_digits) == 1 and not self.blank:
-            self.board[i][j] = available_digits.pop()
-            self.success_board = self.board
+    def filler_speed_boost(self):
+        print(np.array(self.board))
+        
+        time.sleep(0.2)
+        if not self.blanks:
             return True
-        for digit in available_digits:
+        i, j = self.blanks.pop()
+        print(i, j)
+        for digit in ['1', '2', '3', '4', '5', '6', '7', '8', '9']:
+            if digit in self.row_seen[i] or digit in self.col_seen[j] or digit in self.block_seen[i // 3 * 3 + j // 3]:
+                continue
+            self.board[i][j] = digit
             self.row_seen[i].add(digit)
             self.col_seen[j].add(digit)
-            self.block_seen[i // 3 * 3 + j // 3]
-            self.board = digit
-            for ii, jj in self.blank:
-                self.row_seen[i].add(digit)
-                self.col_seen[j].add(digit)
-                self.block_seen[i // 3 * 3 + j // 3].add(digit)
-                if self.filler(ii, jj):
-                    return True
-                self.row_seen[i].remove(digit)
-                self.col_seen[j].remove(digit)
-                self.block_seen[i // 3 * 3 + j // 3].remove(digit)
-        self.blank.add((i, j))
+            self.block_seen[i // 3 * 3 + j // 3].add(digit)
+            if self.filler_speed_boost():
+                return True
+            self.board[i][j] = '.'
+            self.row_seen[i].remove(digit)
+            self.col_seen[j].remove(digit)
+            self.block_seen[i // 3 * 3 + j // 3].remove(digit)
+        self.blanks.append((i, j))
         return False
-                
+
     def test(self):
         board = [["5", "3", ".", ".", "7", ".", ".", ".", "."],
                  ["6", ".", ".", "1", "9", "5", ".", ".", "."],
@@ -71,7 +90,7 @@ class Solution:
                  [".", "6", ".", ".", ".", ".", "2", "8", "."],
                  [".", ".", ".", "4", "1", "9", ".", ".", "5"],
                  [".", ".", ".", ".", "8", ".", ".", "7", "9"]]
-        print(self.solveSudoku(board))
+        self.solve_sudoku_speed_boost(board)
 
 
 Solution().test()
