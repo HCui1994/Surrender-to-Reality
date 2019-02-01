@@ -10,8 +10,6 @@ The passes allow that many days of consecutive travel.  For example, if we get a
 
 Return the minimum number of dollars you need to travel every day in the given list of days.
 
-
-
 Example 1:
 
 Input: days = [1,4,6,7,8,20], costs = [2,7,15]

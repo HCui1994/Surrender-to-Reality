@@ -24,7 +24,29 @@ The knight always initially starts on the board.
 
 
 class Solution(object):
-    def knight_probability(self):
-        pass
+    def knight_probability(self, n, k, r, c):
+        self.n = n
+        self.memo = {}
+        print(self.jump(r, c, k))
 
-    def jump(self, )
+    def jump(self, i, j, k):
+        if i < 0 or j < 0 or i >= self.n or j >= self.n:
+            return 0
+        if k == 0:
+            return 1
+        if (i, j, k) in self.memo:
+            return self.memo[i, j, k]
+        di, dj = [1, 2, 2, 1, -1, -2, -2, -1], [-2, -1, 1, 2, 2, 1, -1, -2]
+        posibility = 0
+        for d in range(8):
+            ii, jj = i + di[d], j + dj[d]
+            posibility += self.jump(ii, jj, k - 1)
+        posibility /= 8
+        self.memo[i, j, k] = posibility
+        return self.memo[i, j, k]
+
+    def test(self):
+        self.knight_probability(3, 2, 0, 0)
+
+
+Solution().test()
