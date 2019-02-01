@@ -28,6 +28,7 @@ P     I
 
 import numpy as np
 
+
 class Solution(object):
     def convert(self, string, num_row):
         num_letters_one_zigzag = 2 * num_row - 2
@@ -60,7 +61,6 @@ class Solution(object):
                 if zigzag[row][col] != '#':
                     res += zigzag[row][col]
         return res
-
 
     def test(self):
         s = "PAYPALISHIRING"
