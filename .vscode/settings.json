@@ -12,8 +12,8 @@
         "--max-line-length=256",
     ],
     "files.associations": {
-        "**/templates/*.html": "django-html",
-        "**/templates/*": "django-txt",
+        // "**/templates/*.html": "django-html",
+        // "**/templates/*": "django-txt",
         "**/requirements{/**,*}.{txt,in}": "pip-requirements",
         "__bit_reference": "cpp",
         "__config": "cpp",
