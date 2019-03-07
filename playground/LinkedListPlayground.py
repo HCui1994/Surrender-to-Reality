@@ -27,16 +27,6 @@ class SingleLinkedList(object):
             prev, curr = curr, next
         self.head = prev
 
-    def reverse_recursive(self):
-        if not self.head or not self.head.next:
-            return
-        
-        def reverse(head, new_head):
-            if not head or not head.next:
-                return head
-            new_head = reverse(head.next, new_head)
-            
-
     def traverse_linked_list(self):
         head = self.head
         buf = []

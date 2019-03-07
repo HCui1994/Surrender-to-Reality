@@ -41,8 +41,7 @@ class Solution(object):
         for idx, candidate in enumerate(candidates):
             if prev_sum + candidate > self.target:
                 continue
-            self.helper(prev_sum + candidate, prev_res +
-                        [candidate], candidates[idx:])
+            self.helper(prev_sum + candidate, prev_res + [candidate], candidates[idx:])
 
     def test(self):
         candidates = [1, 2, 3]

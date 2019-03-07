@@ -1,92 +1,45 @@
+"""
+Given a list of unique words, find all pairs of distinct indices (i, j) in the given list, so that the concatenation of the two words, 
+i.e. words[i] + words[j] is a palindrome.
+
+Example 1:
+
+Input: ["abcd","dcba","lls","s","sssll"]
+Output: [[0,1],[1,0],[3,2],[2,4]] 
+Explanation: The palindromes are ["dcbaabcd","abcddcba","slls","llssssll"]
+Example 2:
+
+Input: ["bat","tab","cat"]
+Output: [[0,1],[1,0]] 
+Explanation: The palindromes are ["battab","tabbat"]
+"""
+
+import collections
+
 
 class Solution:
     def palindromePairs(self, words):
-        """
-        创建 trie 树，之后遍历 word，对 word 逆序 并在 trie 树中查找前缀
-        四种情况：
-        1. 某个 word 的逆序不是 trie 树某个分支的前缀，return
-        2. 某个 word 的逆序是 trie 的某个完整的分支，若该 word 与 trie 分支不是同一个 instance，添加到结果集
-        3. 某个 word 的逆序是 trie 某个分支的前缀，若 trie 该分支剩余的序列是回文序列，添加到结果集
-        4. trie 的某个分支是 word 逆序的前缀，若 word 剩余序列是回文序列，添加到结果集
-        """
-        trie = self._build_trie(words)
+
+        def check_palindrome(word):
+            for i in range(len(word) // 2):
+                if word[i] != word[len(word) - i - 1]:
+                    return False
+            return True
+
+        original_set = {key: value for value, key in enumerate(words)}
+        reversed_set = {key[::-1]: value for value, key in enumerate(words)}
         res = set()
-        num_words = len(words)
-        for i, word in enumerate(words):
-            if word == "":
-                for j, another_word in enumerate(words):
-                    if i == j:
-                        continue
-                    elif self._is_palindrome(another_word):
-                        res.add((i, j))
-                        res.add((j, i))
-            self._search(trie, word[::-1], i, res)
+        for word, i in original_set.items():
+            for index in range(1, len(word) + 1):
+                if word[:index] in reversed_set and i != reversed_set[word[:index]] and check_palindrome(word[index:]):
+                    res.add((i, reversed_set[word[:index]]))
+        for word, i in reversed_set.items():
+            for index in range(1, len(word) + 1):
+                if word[:index] in original_set and i != original_set[word[:index]] and check_palindrome(word[index:]):
+                    res.add((i, original_set[word[:index]]))
         return list(res)
 
-    def _build_trie(self, words):
-        trie = {}
-        for idx, word in enumerate(words):
-            focus = trie
-            for char in word:
-                focus = focus.setdefault(char, {})
-            focus.setdefault("index", idx)
-        return trie
-    
-    def _search(self, trie, word, idx, res):
-        for i, char in enumerate(word):
-            if trie.get("index") is not None and self._is_palindrome(word[i:]):
-                # print("case 4")
-                # case 4: trie 的某个完整分支是 word 逆序的前缀
-                res.add((trie["index"], idx))
-                return
-            if char not in trie.keys():
-                # case 1: 某个 word 的逆序不是 trie 树某个分支的前缀
-                # print("case 1")
-                return
-            trie = trie[char]
-        if trie.get("index") is not None and idx != trie["index"]:
-            # print("case 2")
-            # case 2: 某个 word 的逆序是 trie 的某个完整分支，且该逆序与分支不是同一 instance
-            res.add((trie["index"], idx))
-            res.add((idx, trie["index"]))
-            return
-        else:
-            # print("case 3")
-            # case 3: 某个 word 的逆序是 trie 某个分支的前缀
-            self._dfs_trie(trie, idx, "", res)
-            
 
-    def _is_palindrome(self, word):
-        if not word:
-            return False
-        length = len(word)
-        stack = list(word[:length // 2])
-        if length % 2:
-            idx = length // 2 + 1
-        else:
-            idx = length // 2
-        while idx < length:
-            if word[idx] == stack[-1]:
-                stack.pop()
-            else:
-                return False
-            idx += 1
-        return True
-
-    def _dfs_trie(self, trie, idx, word_remain, res):
-        if trie.get("index") is not None and self._is_palindrome(word_remain):
-            res.add((idx, trie["index"]))
-            print(word_remain, res)
-            return
-        for char in trie.keys():
-            if char == "index":
-                continue
-            self._dfs_trie(trie[char], idx, word_remain + char, res)
-    
-    def test(self):
-        words = ["", "", ""]
-        trie = self._build_trie(words)
-        print(trie)
-
-
-Solution().test()
+if __name__ == "__main__":
+    soln = Solution()
+    soln.palindromePairs(["abcd", "dcba", "lls", "s", "sssll"])

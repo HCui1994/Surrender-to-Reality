@@ -1,28 +1,17 @@
 from functools import singledispatch
+import collections
 
+od = collections.OrderedDict()
 
-@singledispatch
-def to_str(obj):
-    print('%r' % (obj))
+od[1] = 1
+od[2] = 2
+od[3] = 3
+od[4] = 4
 
-
-@to_str.register(int)
-def _to_str(obj):
-    print('Integer: %d' % (obj))
-
-
-@to_str.register(str)
-def _to_str(obj):
-    print('String: %s' % (obj))
-
-
-@to_str.register(list)
-def _to_str(obj):
-    print('List: %r' % (obj))
-
-
-if __name__ == "__main__":
-    to_str(1)
-    to_str('hello')
-    to_str(range(3))
-    to_str(object)
+print(od)
+od.pop(2)
+print(od)
+od.popitem(last=False)
+print(od)
+print(od.popitem(last=True))
+print(od)

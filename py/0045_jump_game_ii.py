@@ -15,28 +15,9 @@ Explanation: The minimum number of jumps to reach the last index is 2.
 
 
 class Solution(object):
-    def jump(self, nums):
-        if len(nums) <= 1:
-            return 0
-        self.final = len(nums) - 1
-        self.nums = nums
-        self.memo = {}
-        return self.jumper(0)
-
-    def jumper(self, pos):
-        if pos == self.final:
-            return 0
-        if pos > self.final:
-            return float("inf")
-        if self.nums[pos] == 0:
-            self.memo[pos] = float("inf")
-        if pos in self.memo:
-            return self.memo[pos]
-        self.memo[pos] = float("inf")
-        for step in range(1, self.nums[pos] + 1):
-            self.memo[pos] = min(self.memo[pos], self.jumper(pos + step))
-        self.memo[pos] += 1
-        return self.memo[pos]
+    def jump_greedy(self, nums):
+        reachable = nums[0]
+        
 
     def test(self):
         nums = [2, 3, 1, 1, 4]

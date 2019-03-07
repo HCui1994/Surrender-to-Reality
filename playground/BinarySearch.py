@@ -48,7 +48,7 @@ class BinarySearch(object):
 
 if __name__ == "__main__":
     bisect = BinarySearch()
-    print(bisect.bs1([5, 5, 5], 6))  # 第一个 大于等于 value
+    print(bisect.bs1([5, 9], 6))  # 第一个 大于等于 value
     print(bisect.bs2([5, 5, 5], 6))  # 第一个 大于 value
     print(bisect.bs3([5, 5, 5], 6))  # 最后一个 小于等于 value
     print(bisect.bs4([5, 5, 5], 6))  # 最后一个 小于 value
