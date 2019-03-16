@@ -1,34 +1,35 @@
-class ListNode(object):
+class SingleListNode(object):
     def __init__(self, x, next=None):
         self.val, self.next = x, next
 
 
-class SingleLinkedList(object):
-    def __init__(self, nodes):
-        self.head = self.build_linked_list(nodes)
+class SingleLinkedListUtil(object):
 
-    def build_linked_list(self, nodes: list):
+    @staticmethod
+    def build_linked_list(nodes: list):
         if not nodes:
             return None
-        head = ListNode(nodes[0])
+        head = SingleListNode(nodes[0])
         curr = head
         for node in nodes[1:]:
-            curr.next = ListNode(node)
+            curr.next = SingleListNode(node)
             curr = curr.next
         return head
 
-    def reverse_iterative(self):
-        if not self.head or not self.head.next:
+    @staticmethod
+    def reverse_iterative(self, head):
+        if not head or not head.next:
             return
-        prev, curr = None, self.head
+        prev, curr = None, head
         while curr:
             next = curr.next
             curr.next = prev
             prev, curr = curr, next
-        self.head = prev
+        head = prev
+        return head
 
-    def traverse_linked_list(self):
-        head = self.head
+    @staticmethod
+    def print_single_linked_list(head):
         buf = []
         while head:
             buf.append(head.val)
