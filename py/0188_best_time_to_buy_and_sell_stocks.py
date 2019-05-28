@@ -48,20 +48,17 @@ class Solution(object):
         """
         markov chain，可以改良空间到 O(1)
         """
-        if len(prices) < 2 or k == 0:
+        if len(prices) < 2:
             return 0
-        idle1 = 0
+        idle0 = 0
         hold1 = -prices[0]
-        max_profit = 0
-        idle2 = idle3 = hold2 = -float("inf")
+        idle1 = -float("inf")
+        max_profit = max(idle0, hold1, idle1)
         for price in prices[1:]:
-            hold1 = max(hold1, idle1 - price)
-            max_profit = max(max_profit, hold1)
-            for _ in range(2, k + 1):
-                idle2 = max(idle2, hold1 + price)
-                hold2 = max(hold2, idle2 - price)
-                max_profit = max(max_profit, idle2, hold2)
-            idle3 = max(idle3, hold2 + price)
-            max_profit = max(max_profit, idle3)
-        print(max_profit)
+            for rnd in range(k):
+                hold1_temp = max(hold1, idle1 - price)
+                idle1_temp = max(idle1, hold1 + price)
+                max_profit = max(max_profit, hold1, idle1)
+        return max_profit
+
 

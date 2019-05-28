@@ -13,6 +13,8 @@ Calling hasNext() after that should return false.
 
 # Below is the interface for Iterator, which is already defined for you.
 #
+
+
 class Iterator:
     def __init__(self, nums):
         """
@@ -32,6 +34,7 @@ class Iterator:
         :rtype: int
         """
 
+
 class PeekingIterator:
     def __init__(self, iterator):
         """
@@ -39,29 +42,35 @@ class PeekingIterator:
         :type iterator: Iterator
         """
         self.iterator = iterator
-        
+        self.peek = self.iterator.next() if self.iterator.hasNext() else None
+        print(self.peek)
 
     def peek(self):
         """
         Returns the next element in the iteration without advancing the iterator.
         :rtype: int
         """
-        
+        return self.peek
 
     def next(self):
         """
         :rtype: int
         """
-        
+        ret = self.peek
+        self.peek = self.iterator.next() if self.iterator.hasNext() else None
+        print(self.peek)
+        return ret
 
     def hasNext(self):
         """
         :rtype: bool
         """
-        
+        return self.peek is not None
+
 
 # Your PeekingIterator object will be instantiated and called as such:
 # iter = PeekingIterator(Iterator(nums))
 # while iter.hasNext():
 #     val = iter.peek()   # Get the next element but not advance the iterator.
 #     iter.next()         # Should return the same value as [val].
+

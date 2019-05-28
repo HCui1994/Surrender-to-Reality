@@ -153,7 +153,10 @@ class Solution(object):
         return -1
 
 
+
 if __name__ == '__main__':
     board = [[4, 1, 2], [5, 0, 3]]
     soln = Solution()
     print(soln.sliding_pizzle_double_bfs(board))
+
+

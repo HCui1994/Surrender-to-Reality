@@ -1,13 +1,12 @@
-class Heap(list):
+class MinHeap(list):
     def __init__(self, *args, **kwargs):
-
         super().__init__(*args, **kwargs)
         self.heapify()
 
     def _floatup(self, pos):
         parentpos = (pos - 1) // 2
         while parentpos >= 0:
-            if self[pos] < self[parentpos]:
+            if self[pos] <= self[parentpos]:
                 self[pos], self[parentpos] = self[parentpos], self[pos]
                 pos, parentpos = parentpos, (parentpos - 1) // 2
                 continue
@@ -41,10 +40,19 @@ class Heap(list):
         for pos in reversed(range(n // 2)):
             self._sinkdown(pos, len(self) - 1)
 
-if __name__ == "__main__":
-    import heapq
-    heap = Heap([9, 8, 7, 6, 5, 4, 3, 2, 1])
-    print(heap)
-    arr = [9, 8, 7, 6, 5, 4, 3, 2, 1]
-    heapq.heapify(arr)
-    print(arr)
+
+# class MaxHeap(list):
+#     def __init__(self, iterable):
+#         return super().__init__(iterable)
+
+#     def _floatup(self, pos):
+#         parent_pos = (pos - 1) // 2
+#         while parent_pos >= 0:
+#             if self[pos] <= self[parent_pos]:
+#                 self[pos], self[parent_pos] = self[parent_pos], self[pos]
+#                 pos, parent_pos = parent_pos, (parent_pos - 1) // 2
+#                 continue
+#             break
+    
+#     def _sinkdown(self, pos):
+
