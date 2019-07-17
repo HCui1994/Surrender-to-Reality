@@ -32,41 +32,40 @@ If you still see your function signature accepts a const char * argument, please
 
 """
 
+from enum import Enum
+
+State = Enum("State", ("start", "sign", "digit1", "dot", "digit2", "e", "digit3", "blank2", "true", "false"))
 
 class Solution(object):
     def is_number(self, s):
-        status = "skip"
-        digits = ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0']
-        for i in range(len(s)):
-            if status == "skip_prev":
-                if s[i] == ' ':
-                    pass
-                elif s[i] in ['+', '-']:
-                    status = "record_prev"
-                elif s[i] in digits:
-                    status = "record_prev"
+        state = State.start
+        for c in s:
+            if state == State.start:
+                if c == ' ':
+                    continue
+                elif c in "+-":
+                    state = State.sign
+                elif c in "1234567890":
+                    state = State.digit1
+                elif c == '.':
+                    state = State.dot
                 else:
-                    return False
-            elif status == "record_prev":
-                if s[i] in digits:
-                    pass
-                elif s[i] in ['e', 'E']:
-                    status = "record_post"
+                    state = "false"
+            elif state == State.sign:
+                if c in "1234567890":
+                    state = State.digit2
+                elif c == 'e':
+                    state = State.e
                 else:
-                    return False
-            elif status == "record_post":
-                if s[i] in digits:
-                    pass
-                elif s[i] == ' ':
-                    status = "skip_post"
-                else:
-                    return False
-            elif status == "skip_post":
-                if s[i] == ' ':
-                    pass
-                else:
-                    return False
-        return True
+                    break
+            elif state == State.digit2:
+                if c in "1234567890":
+                    state = State.digit2
+                elif c == 'e':
+                    state = State.e
+                
+                
+                
 
 
     def test(self):

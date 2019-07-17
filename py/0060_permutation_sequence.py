@@ -12,62 +12,50 @@ By listing and labeling all of the permutations in order, we get the following s
 Given n and k, return the kth permutation sequence.
 
 Note:
-
 Given n will be between 1 and 9 inclusive.
 Given k will be between 1 and n! inclusive.
-Example 1:
 
+Example 1:
 Input: n = 3, k = 3
 Output: "213"
-Example 2:
 
+Example 2:
 Input: n = 4, k = 9
 Output: "2314"
 """
 
+# import bisect
+
 
 class Solution(object):
+    def __init__(self):
+        self.fact_memo = {}
+        self.fact_memo[1] = 1
+        self.fact_memo[0] = 1
+
+    def fact(self, x):
+        if x in self.fact_memo:
+            return self.fact_memo[x]
+        return x * self.fact(x - 1)
+
     def get_permutation(self, n, k):
-        """
-        1 2 3 4 
-        1 2 4 3 
-        1   3 2 4
-        1   3 4 2
-        1       4 2 3
-        1       4 3 2
-
-        2 1 3 4
-        2 1 4 3
-        2 3 1 4 
-        2 3 4 1
-        2 4 1 3
-        2 4 3 1
-
-        3 1 2 4
-        3 1 4 2
-        3 2 1 4
-        3 2 4 1
-        3 4 1 2
-        3 4 2 1
-
-        4 1 2 3
-        4 1 3 2
-        4 2 1 3
-        4 2 3 1
-        4 3 1 2
-        4 3 2 1
-        """
-        fact = lambda x: 1 if x == 0 or x == 1 else fact(x - 1) * x
-        n_comb = fact(n)
-        k %= n_comb
+        digits = list(range(1, n + 1))
+        print("all digits", digits)
         res = ""
-        pos = n
-        digit_set = list(range(1, n + 1))
-        while pos >= 0:
-            quotient, remainder = divmod(n_comb, pos)
-            
+        for i in range(n - 1, 0, -1):
+            quotient, remainder = divmod(k, self.fact(i))
+            k -= quotient * self.fact(i)
 
-            
+            idx = quotient
+            if remainder == 0:
+                idx -= 1
+            # print(idx)
 
+            candidate = digits[idx]
+            res += str(candidate)
+            digits.remove(candidate)
+        
+        res += str(digits[0])
+        print(res)
 
-Solution().get_permutation(4,15)
+Solution().get_permutation(3, 3)

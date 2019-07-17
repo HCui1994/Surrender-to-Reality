@@ -1,9 +1,4 @@
-def a():
-    print("a")
-    return True
+import bisect
 
-def b():
-    print("b")
-    return False
-
-print(a() or a())
+a = [1, 2, 3, 6, 7, 8]
+print(bisect.bisect_right(a, 5))
