@@ -57,4 +57,4 @@ class Solution(object):
         return matrix
 
 
-Solution().generate_matrix(2)
+Solution().generate_matrix(4)
